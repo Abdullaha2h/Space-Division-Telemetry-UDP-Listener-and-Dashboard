@@ -9,8 +9,8 @@ interface Props { latest: Telemetry; stats: Stats | null; }
 function SectionLabel({ icon: Icon, label }: { icon: any; label: string }) {
     return (
         <div className="flex items-center gap-1.5 mb-2">
-            <Icon className="w-3 h-3 text-white/30" />
-            <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest">{label}</span>
+            <Icon className="w-3 h-3 text-white/80" />
+            <span className="text-[10px] font-semibold text-white/80 uppercase tracking-widest">{label}</span>
         </div>
     );
 }
@@ -18,8 +18,8 @@ function SectionLabel({ icon: Icon, label }: { icon: any; label: string }) {
 function Chip({ label, value, color }: { label: string; value: string; color?: string }) {
     return (
         <div className="flex flex-col gap-0.5 px-3 py-2 rounded-lg border border-white/10 bg-white/5">
-            <span className="text-[9px] font-medium text-white/40 uppercase tracking-wider">{label}</span>
-            <span className={`text-sm font-bold leading-snug ${color ?? "text-white/90"}`}>{value}</span>
+            <span className="text-[9px] font-medium text-white/80 uppercase tracking-wider">{label}</span>
+            <span className={`text-sm font-bold leading-snug ${color ?? "text-white"}`}>{value}</span>
         </div>
     );
 }
@@ -54,7 +54,7 @@ export default function TelemetryStatsRow({ latest, stats }: Props) {
                             <Chip label="Packets" value={String(stats.total_packets)} color="text-purple-400" />
                         </>
                     ) : (
-                        <p className="col-span-4 text-xs text-white/30">Loading...</p>
+                        <p className="col-span-4 text-xs text-white/80">Loading...</p>
                     )}
                 </div>
             </div>

@@ -1,79 +1,104 @@
 🚀 UDP Listener running on 0.0.0.0:3333
-📡 Packet received from 127.0.0.1:50405
+📡 Packet received from 127.0.0.1:65434
 ✅ Parsed: {
   satellite_id: 101,
-  timestamp: 2026-02-28T10:05:55.000Z,
-  battery_voltage: 11000,
-  battery_temp: 30,
-  msi_temperature: 25,
-  ssr_used: 512
-}
-📡 Packet received from 127.0.0.1:50405
-✅ Parsed: {
-  satellite_id: 101,
-  timestamp: 2026-02-28T10:05:56.000Z,
-  battery_voltage: 13000,
-  battery_temp: 30,
-  msi_temperature: 45,
-  ssr_used: 512
-}
-📡 Packet received from 127.0.0.1:50405
-✅ Parsed: {
-  satellite_id: 101,
-  timestamp: 2026-02-28T10:05:57.000Z,
+  timestamp: 2026-02-28T18:51:28.000Z,
   battery_voltage: 13000,
   battery_temp: 30,
   msi_temperature: 25,
   ssr_used: 512
 }
-📡 Packet received from 127.0.0.1:50405
+📡 Packet received from 127.0.0.1:59038
 ✅ Parsed: {
   satellite_id: 101,
-  timestamp: 2026-02-28T10:05:58.000Z,
-  battery_voltage: 11000,
+  timestamp: 2026-02-28T18:51:31.000Z,
+  battery_voltage: 13000,
   battery_temp: 30,
   msi_temperature: 25,
   ssr_used: 512
 }
-⚠ ALERT: MSI Temperature is critical at 45°C
-⚠ ALERT: Battery Voltage is low at 11000mV
-⚠ ALERT: Battery Voltage is low at 11000mV
-📡 Packet received from 127.0.0.1:50405
+📡 Packet received from 127.0.0.1:59038
 ✅ Parsed: {
   satellite_id: 101,
-  timestamp: 2026-02-28T10:05:59.000Z,
+  timestamp: 2026-02-28T18:51:32.000Z,
   battery_voltage: 13000,
   battery_temp: 30,
-  msi_temperature: 45,
+  msi_temperature: 25,
   ssr_used: 512
 }
-⚠ ALERT: MSI Temperature is critical at 45°C
-📡 Packet received from 127.0.0.1:50405
+📡 Packet received from 127.0.0.1:59038
 ✅ Parsed: {
   satellite_id: 101,
-  timestamp: 2026-02-28T10:06:00.000Z,
+  timestamp: 2026-02-28T18:51:33.000Z,
   battery_voltage: 11000,
   battery_temp: 30,
   msi_temperature: 25,
   ssr_used: 512
 }
 ⚠ ALERT: Battery Voltage is low at 11000mV
-📡 Packet received from 127.0.0.1:50405
+📡 Packet received from 127.0.0.1:59038
 ✅ Parsed: {
   satellite_id: 101,
-  timestamp: 2026-02-28T10:06:01.000Z,
-  battery_voltage: 13000,
+  timestamp: 2026-02-28T18:51:34.000Z,
+  battery_voltage: 11000,
   battery_temp: 30,
   msi_temperature: 25,
   ssr_used: 512
 }
-📡 Packet received from 127.0.0.1:50405
+⚠ ALERT: Battery Voltage is low at 11000mV
+📡 Packet received from 127.0.0.1:59038
 ✅ Parsed: {
   satellite_id: 101,
-  timestamp: 2026-02-28T10:06:03.000Z,
+  timestamp: 2026-02-28T18:51:35.000Z,
   battery_voltage: 13000,
   battery_temp: 30,
   msi_temperature: 45,
   ssr_used: 512
 }
 ⚠ ALERT: MSI Temperature is critical at 45°C
+📡 Packet received from 127.0.0.1:59038
+✅ Parsed: {
+  satellite_id: 101,
+  timestamp: 2026-02-28T18:51:36.000Z,
+  battery_voltage: 13000,
+  battery_temp: 30,
+  msi_temperature: 25,
+  ssr_used: 512
+}
+📡 Packet received from 127.0.0.1:59038
+✅ Parsed: {
+  satellite_id: 101,
+  timestamp: 2026-02-28T18:51:37.000Z,
+  battery_voltage: 13000,
+  battery_temp: 30,
+  msi_temperature: 25,
+  ssr_used: 512
+}
+📡 Packet received from 127.0.0.1:59038
+✅ Parsed: {
+  satellite_id: 101,
+  timestamp: 2026-02-28T18:51:38.000Z,
+  battery_voltage: 11000,
+  battery_temp: 30,
+  msi_temperature: 25,
+  ssr_used: 512
+}
+⚠ ALERT: Battery Voltage is low at 11000mV
+📡 Packet received from 127.0.0.1:59038
+✅ Parsed: {
+  satellite_id: 101,
+  timestamp: 2026-02-28T18:51:39.000Z,
+  battery_voltage: 13000,
+  battery_temp: 30,
+  msi_temperature: 25,
+  ssr_used: 512
+}
+📡 Packet received from 127.0.0.1:59038
+✅ Parsed: {
+  satellite_id: 101,
+  timestamp: 2026-02-28T18:51:41.000Z,
+  battery_voltage: 13000,
+  battery_temp: 30,
+  msi_temperature: 25,
+  ssr_used: 512
+}

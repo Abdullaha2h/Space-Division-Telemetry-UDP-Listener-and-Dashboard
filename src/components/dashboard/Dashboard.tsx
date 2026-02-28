@@ -31,30 +31,35 @@ export default function Dashboard() {
     }, []);
 
     useEffect(() => {
+        let isActive = true;
+
         const fetchAll = async () => {
+            if (!isActive) return;
             try {
-
-
                 const [latestRes, alertsRes, statsRes, listenerRes] = await Promise.all([
                     fetch(`/api/telemetry/latest?satellite_id=${SATELLITE_ID}`),
                     fetch(`/api/alerts?satellite_id=${SATELLITE_ID}`),
                     fetch(`/api/stats/satellite/${SATELLITE_ID}`),
                     fetch(`/api/process/listener`),
                 ]);
-                if (latestRes.ok) setLatest(await latestRes.json());
-                if (alertsRes.ok) setAlerts(await alertsRes.json());
-                if (statsRes.ok) setStats(await statsRes.json());
-                if (listenerRes.ok) {
+                if (isActive && latestRes.ok) setLatest(await latestRes.json());
+                if (isActive && alertsRes.ok) setAlerts(await alertsRes.json());
+                if (isActive && statsRes.ok) setStats(await statsRes.json());
+                if (isActive && listenerRes.ok) {
                     const d = await listenerRes.json();
                     setListenerStatus(d.isRunning ? "running" : "stopped");
                 }
             } catch (err) {
                 console.error("Poll error:", err);
+            } finally {
+                if (isActive) {
+                    setTimeout(fetchAll, 3000);
+                }
             }
         };
+
         fetchAll();
-        const interval = setInterval(fetchAll, 3000);
-        return () => clearInterval(interval);
+        return () => { isActive = false; };
     }, []);
 
     const toggleListener = async () => {
@@ -82,7 +87,7 @@ export default function Dashboard() {
             style={{ backgroundImage: "url('/Background.jpg')", backgroundSize: "cover", backgroundPosition: "center", backgroundRepeat: "no-repeat" }}>
 
             {/* Dark overlay so UI stays readable over bright parts of the image */}
-            <div className="absolute inset-0 z-0 bg-black/55 pointer-events-none" />
+            <div className="absolute inset-0 z-0 bg-black/10 pointer-events-none" />
 
             {/* ── All content sits above the overlay ── */}
             <div className="relative z-10 flex flex-col h-full">
@@ -91,18 +96,18 @@ export default function Dashboard() {
                 <header className="flex items-center justify-between px-6 py-2.5 border-b border-white/10 bg-black/30 backdrop-blur-md shrink-0">
                     <div>
                         <h1 className="text-2xl font-bold tracking-tight text-white">Telemetry Command Center</h1>
-                        <p className="text-[10px] text-white/50">SAT-{SATELLITE_ID} · Ground Control Interface</p>
+                        <p className="text-[10px] text-white/80">SAT-{SATELLITE_ID} · Ground Control Interface</p>
                     </div>
                     <div className="flex items-center gap-3">
                         {currentTime && (
-                            <div className="h-7 px-3 flex items-center justify-center bg-white/5 border border-white/10 rounded-md text-xs font-mono text-white/80 shrink-0">
-                                {currentTime.toLocaleTimeString('en-US', { hour12: true })} <span className="text-[9px] text-white/40 ml-1.5 uppercase tracking-widest text-center mt-0.5">LOCAL</span>
+                            <div className="h-7 px-3 flex items-center justify-center bg-white/5 border border-white/10 rounded-md text-xs font-mono text-white shrink-0">
+                                {currentTime.toLocaleTimeString('en-US', { hour12: true })} <span className="text-[9px] text-white ml-1.5 uppercase tracking-widest text-center mt-0.5">LOCAL</span>
                             </div>
                         )}
 
                         <div className="flex items-center gap-1.5 text-[11px]">
                             <span className={`h-1.5 w-1.5 rounded-full ${listenerStatus === "running" ? "bg-emerald-400 shadow-[0_0_6px_#34d399] animate-pulse" : "bg-red-500"}`} />
-                            <span className="text-white/50 hidden sm:inline">{listenerStatus === "running" ? "Uplink Active" : "Uplink Offline"}</span>
+                            <span className="text-white hidden sm:inline">{listenerStatus === "running" ? "Uplink Active" : "Uplink Offline"}</span>
                         </div>
                     </div>
                 </header>
@@ -111,7 +116,7 @@ export default function Dashboard() {
                 {!latest ? (
                     /* No data yet — centered loading with process controls */
                     <div className="flex-1 flex flex-col items-center justify-center gap-6 px-6">
-                        <p className="text-sm text-white/40">No telemetry data — start the listener then run the simulator.</p>
+                        <p className="text-sm text-white">No telemetry data — start the listener then run the simulator.</p>
                         <div className="w-full max-w-3xl rounded-2xl border border-white/10 bg-black/30 backdrop-blur-xl p-4">
                             <ProcessTerminals listenerStatus={listenerStatus} onListenerToggle={toggleListener} onShowHistory={() => setShowHistory(true)} />
                         </div>

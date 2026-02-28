@@ -8,7 +8,7 @@ A comprehensive system for processing space telemetry data, built with Next.js, 
 
 ### Prerequisites
 
-1. **Node.js** 
+1. **Node.js**
 2. **MongoDB** instance (Atlas)
 
 ### 1. Installation & Environment
@@ -16,6 +16,8 @@ A comprehensive system for processing space telemetry data, built with Next.js, 
 Clone the repository and install dependencies:
 
 ```bash
+git clone https://github.com/Abdullaha2h/Space-Division-Telemetry-UDP-Listener-and-Dashboard.git
+cd Space-Division-Telemetry-UDP-Listener-and-Dashboard
 npm install
 ```
 
@@ -65,7 +67,7 @@ _(Listens on port 3333 and saves parsed valid packets and alerts to MongoDB)_
 **Run the UDP Simulator:**
 
 ```bash
-npm run simulate
+npm run simulator
 ```
 
 _(Sends 10 mock UDP telemetry packets to the listener)_

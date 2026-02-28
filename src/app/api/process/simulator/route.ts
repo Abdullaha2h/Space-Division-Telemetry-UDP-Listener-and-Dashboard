@@ -11,10 +11,20 @@ export async function GET() {
         if (!fs.existsSync(SIM_LOG_FILE)) {
             return NextResponse.json({ logs: '' });
         }
-        const logs = fs.readFileSync(SIM_LOG_FILE, 'utf-8');
+        // Read tail of the file to prevent massive payload sizes
+        const stats = fs.statSync(SIM_LOG_FILE);
+        const chunkSize = 5000; // Read last 5KB
+        const start = Math.max(0, stats.size - chunkSize);
+
+        const buffer = Buffer.alloc(chunkSize);
+        const fd = fs.openSync(SIM_LOG_FILE, 'r');
+        const bytesRead = fs.readSync(fd, buffer, 0, chunkSize, start);
+        fs.closeSync(fd);
+
+        const logs = buffer.toString('utf-8', 0, bytesRead);
         return NextResponse.json({ logs });
     } catch (err: any) {
-        return NextResponse.json({ logs: '' });
+        return NextResponse.json({ error: "Failed to read logs", details: err.message }, { status: 500 });
     }
 }
 

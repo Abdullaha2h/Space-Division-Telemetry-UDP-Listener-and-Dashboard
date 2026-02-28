@@ -20,28 +20,48 @@ export default function ProcessTerminals({ listenerStatus, onListenerToggle, onS
     useEffect(() => { if (simRef.current) simRef.current.scrollTop = simRef.current.scrollHeight; }, [simLogs]);
     useEffect(() => { if (rxRef.current) rxRef.current.scrollTop = rxRef.current.scrollHeight; }, [listenerLogs]);
 
-    // Poll listener logs every 2s while running
+    // Poll listener logs every 2s while running (recursive timeout to avoid overlap)
     useEffect(() => {
         if (listenerStatus !== "running") return;
-        const poll = setInterval(async () => {
+        let isActive = true;
+
+        const poll = async () => {
+            if (!isActive) return;
             try {
                 const res = await fetch("/api/process/listener/logs");
-                if (res.ok) { const d = await res.json(); if (d.logs) setListenerLogs(d.logs); }
+                if (isActive && res.ok) {
+                    const d = await res.json();
+                    if (d.logs) setListenerLogs(d.logs);
+                }
             } catch { /* silent */ }
-        }, 2000);
-        return () => clearInterval(poll);
+            finally {
+                if (isActive) setTimeout(poll, 2000);
+            }
+        };
+        poll();
+        return () => { isActive = false; };
     }, [listenerStatus]);
 
-    // Poll simulator logs every second while it's running
+    // Poll simulator logs every second while it's running (recursive timeout)
     useEffect(() => {
         if (!simRunning) return;
-        const poll = setInterval(async () => {
+        let isActive = true;
+
+        const poll = async () => {
+            if (!isActive) return;
             try {
                 const res = await fetch("/api/process/simulator");
-                if (res.ok) { const d = await res.json(); if (d.logs) setSimLogs(d.logs); }
+                if (isActive && res.ok) {
+                    const d = await res.json();
+                    if (d.logs) setSimLogs(d.logs);
+                }
             } catch { /* silent */ }
-        }, 1000);
-        return () => clearInterval(poll);
+            finally {
+                if (isActive) setTimeout(poll, 1000);
+            }
+        };
+        poll();
+        return () => { isActive = false; };
     }, [simRunning]);
 
     const runSimulator = async () => {
@@ -59,10 +79,10 @@ export default function ProcessTerminals({ listenerStatus, onListenerToggle, onS
         <div className="flex flex-col gap-2 h-full">
             {/* Button row */}
             <div className="flex items-center gap-2 shrink-0">
-                <span className="text-[10px] font-semibold text-white/40 uppercase tracking-widest mr-1">Process Control</span>
+                <span className="text-[10px] font-semibold text-white/80 uppercase tracking-widest mr-1">Process Control</span>
 
                 <Button variant="ghost" size="sm"
-                    className={`h-7 text-xs border ${listenerStatus === "running" ? "border-red-500/40 text-red-400 hover:bg-red-500/10" : "border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/10"} bg-white/5`}
+                    className={`h-7 text-xs border ${listenerStatus === "running" ? "border-red-500/40 text-red-400 hover:bg-red-500/20 hover:text-red-300" : "border-emerald-500/40 text-emerald-400 hover:bg-emerald-500/20 hover:text-emerald-300"} bg-white/5 transition-colors`}
                     onClick={onListenerToggle} disabled={listenerStatus === "loading"}>
                     {listenerStatus === "running"
                         ? <><Square className="w-3 h-3 mr-1" />Stop Listener</>
@@ -70,7 +90,7 @@ export default function ProcessTerminals({ listenerStatus, onListenerToggle, onS
                 </Button>
 
                 <Button variant="ghost" size="sm"
-                    className="h-7 text-xs border border-blue-500/40 text-blue-400 hover:bg-blue-500/10 bg-white/5 disabled:opacity-40"
+                    className="h-7 text-xs border border-blue-500/40 text-blue-400 hover:bg-blue-500/20 hover:text-blue-300 bg-white/5 disabled:opacity-40 transition-colors"
                     onClick={runSimulator} disabled={simRunning || listenerStatus !== "running"}
                     title={listenerStatus !== "running" ? "Start listener first" : "Send 10 test packets"}>
                     {simRunning
@@ -79,14 +99,14 @@ export default function ProcessTerminals({ listenerStatus, onListenerToggle, onS
                 </Button>
 
                 {listenerStatus === "stopped" && (
-                    <span className="text-[10px] text-white/25">(Start listener first)</span>
+                    <span className="text-[10px] text-white/80">(Start listener first)</span>
                 )}
 
                 {onShowHistory && (
                     <Button
                         variant="ghost"
                         size="sm"
-                        className="ml-auto h-7 text-xs gap-1.5 bg-white/5 hover:bg-white/10 border border-white/10 text-white/70"
+                        className="ml-auto h-7 text-xs gap-1.5 bg-white/5 hover:bg-white/20 border border-white/10 text-white/80 hover:text-white transition-colors"
                         onClick={onShowHistory}
                     >
                         <Clock className="w-3 h-3" />
@@ -102,7 +122,7 @@ export default function ProcessTerminals({ listenerStatus, onListenerToggle, onS
                 <div className="flex flex-col rounded-lg border border-white/10 overflow-hidden">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-white/10 bg-white/5 shrink-0">
                         <TerminalSquare className="w-3 h-3 text-blue-400" />
-                        <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Simulator (Tx)</span>
+                        <span className="text-[10px] font-mono text-white/80 uppercase tracking-widest">Simulator (Tx)</span>
                         {simRunning && <span className="ml-auto text-[9px] text-blue-400 animate-pulse">● live</span>}
                     </div>
                     <div className="flex-1 min-h-0 bg-black/40">
@@ -116,7 +136,7 @@ export default function ProcessTerminals({ listenerStatus, onListenerToggle, onS
                 <div className="flex flex-col rounded-lg border border-white/10 overflow-hidden">
                     <div className="flex items-center gap-1.5 px-3 py-1.5 border-b border-white/10 bg-white/5 shrink-0">
                         <TerminalSquare className="w-3 h-3 text-emerald-400" />
-                        <span className="text-[10px] font-mono text-white/40 uppercase tracking-widest">Listener (Rx)</span>
+                        <span className="text-[10px] font-mono text-white/80 uppercase tracking-widest">Listener (Rx)</span>
                         {listenerStatus === "running" && <span className="ml-auto text-[9px] text-emerald-400 animate-pulse">● live</span>}
                     </div>
                     <div className="flex-1 min-h-0 bg-black/40">
