@@ -11,8 +11,6 @@ import ProcessTerminals from "./ProcessTerminals";
 import HistoryModal from "./HistoryModal";
 
 
-// LightPillar uses WebGL — lazy load client-only
-const LightPillar = dynamic(() => import("./LightPillar"), { ssr: false });
 
 const SATELLITE_ID = 101;
 
