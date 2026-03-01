@@ -21,7 +21,7 @@ cd Space-Division-Telemetry-UDP-Listener-and-Dashboard
 npm install
 ```
 
-Create a `.env.local` file in the root directory and add your MongoDB connection string:
+Create a `.env` file in the root directory and add your MongoDB connection string:
 
 ```env
 MONGODB_URI=mongodb://localhost:27017/space_telemetry
